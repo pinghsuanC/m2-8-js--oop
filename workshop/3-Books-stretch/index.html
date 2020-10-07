@@ -5,11 +5,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div  class="page-title"><h1>♥ Please don't stop reading ♥</h1></div>
+    <div  class="page-title"><h1>♥ Don't stop reading ♥</h1></div>
     <main id="main">
         <!--1st container: form and info display-->
         <div class="container-form-info wrapped">
             <div class="form-ele form-info-sub">
+                <h4>Add a book to the list when you finish the previosu one:</h4>
                 <form action="submit">
                     <!--title-->
                     <div class="form-inner">
@@ -29,7 +30,7 @@
                     <!--imagelink-->
                     <div class="form-inner">
                         <label for="book-input-img">URL of img: </label>
-                        <input type="text" id="book-input-img" required>
+                        <input type="text" id="book-input-img" placeholder="Not Required :)">
                     </div>
                     <!--have read-->
                     <div class="form-inner">
@@ -46,19 +47,68 @@
                     </div>
                 </form>
             </div>
+
             <div class="info-ele form-info-sub">
-                <div class="default-txt">Click the book img and the book info will be displayed here!</div> 
+                <!--default text-->
+                <h4 class="default-txt">Hover the book img and the book info will be displayed!</h4> 
+                <!--Exampler display-->
+                <div class="book-info-txt">
+                    <div class="book-info-sub">TITLE: <div class="book-info-input"></div></div>
+                    <div class="book-info-sub">GENRE: <div class="book-info-input"></div></div>
+                    <div class="book-info-sub">AUTHOR: <div class="book-info-input"></div></div>
+                    <div class="book-info-sub">ISREAD: <div class="book-info-input"></div></div>
+                    <div class="book-info-sub">STARTDATE: <div class="book-info-input"></div></div>
+                    <div class="book-info-sub">ENDDATE: <div class="book-info-input"></div></div>
+                </div>
             </div>
+
+            <div class="info-last-read form-info-sub">
+                <!--default text
+                <div class="default-txt">Click the book img and the book info will be displayed here!</div> -->
+                <!--Exampler display-->
+                <div class="book-inner last-read">
+                    <div>Last read: </div>
+                    <div class="book-obj" id="last-read-book">
+                        <img src="./asset/default_book.jpeg" alt="" class="book-obj-img">
+                        <div class="book-obj-title">BOOK TITLE</div>
+                    </div>
+                </div>
+                <div class="book-inner cur-read">
+                    <div>Currently reading: </div>
+                    <div class="book-obj" id="cur-read-book">
+                        <img src="./asset/default_book.jpeg" alt="" class="book-obj-img">
+                        <div class="book-obj-title">BOOK TITLE</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!--2nd container: book-display-->
         <div class="container-book wrapped">
-            <div class="book-obj">
-                <img src="./asset/default_book.jpeg" alt="" class="book-obj-img">
-                <div class="book-obj-title">BOOKTITLE</div>
+            <!-- EXAMPLES
+            <div class="book-inner">
+                <div class="book-obj">
+                    <img src="./asset/default_book.jpeg" alt="" class="book-obj-img">
+                    <div class="book-obj-title">Red Rising (Red Rising Series Book 1)</div>
+                </div>
             </div>
+            <div class="book-inner">
+                <div class="book-obj">
+                    <img src="./asset/default_book.jpeg" alt="" class="book-obj-img">
+                    <div class="book-obj-title">BOOKTITLE</div>
+                </div>
+            </div>
+            <div class="book-inner">
+                <div class="book-obj">
+                    <img src="./asset/default_book.jpeg" alt="" class="book-obj-img">
+                    <div class="book-obj-title">BOOKTITLE</div>
+                </div>
+            </div>
+            -->
         </div>
 
     </main> 
+    <script src="app.js"></script>
 </body>
 </html>

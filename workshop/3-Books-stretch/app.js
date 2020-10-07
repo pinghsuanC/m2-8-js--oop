@@ -1,7 +1,22 @@
+/* NOTE: The question didn't specify how the system works, e.g. is the book read by sequence?
+            So I made the assumption that the person will only add booklist once oneself
+            finish reading the last one. That is the person won't start a new book unless finish
+            the previous one.
+*/
+
 // get some important nodes
-let h_node = getByTag("head")[0];
-let b_node = getByTag("body")[0];
-let m_node = getById("main");
+const h_node = getByTag("head")[0];
+const b_node = getByTag("body")[0];
+const m_node = getById("main");
+// other wrapper nodes
+const book_container = getByClass("container-book")[0];
+const form_container = getByClass("container-form-info")[0];
+const form_node = getByTag("form")[0];
+const book_info_node = getByClass("book-info-txt")[0];
+let BOOK_DICTIONARY = {};       // referencing the book and the html node
+
+IMG_DEFAULT_PATH = "./asset/default_book.jpeg";
+SUCCESS_ADD_MSG = "Successfully added a book!";
 
 // The book class and booklist class
 // NOTE: there may be some modifications to adapt to this webpage
@@ -11,6 +26,8 @@ class Book {
     genre=undefined;
     author=undefined;
     isRead=false;
+    startDate=undefined;
+    endDate=undefined;
 
     // getters
     getIsRead(){
@@ -19,10 +36,39 @@ class Book {
     getTitle(){
         return this.title;
     }
+    getGenre(){
+        return this.genre;
+    }
+    getIsRead(){
+        return this.isRead;
+    }
+    getAuthor(){
+        return this.author;
+    }
+    getStartDate(){
+        if(this.startDate!=undefined){
+            return this.startDate;
+        }else{
+            return "The date is unknown";
+        }
+    }
+    getEndDate(){
+        if(this.endDate!=undefined){
+            return this.endDate;
+        }else{
+            return "The date is unknown";
+        }
+    }
 
     // setters
-    setIsRead(){
+    setIsRead(boo){
         this.isRead=true;
+    }
+    setStartDate(date_input){
+        this.startDate=date_input;
+    }
+    setEndDate(date_input){
+        this.endDate=date_input;
     }
 
     // constructor
@@ -31,12 +77,12 @@ class Book {
         this.genre=genre;
         this.author=author;
         if(isRead===true){
-            this.isRead=isRead;
+            this.setIsRead(true);
         }
     }
 }
 
-    class BookList {
+class BookList {
     // Code here
     books=[];
     lastRead=null;
@@ -49,6 +95,17 @@ class Book {
     getCurrentlyReading(){
         return this.currentlyReading;
     }
+    getLastRead(){
+        return this.lastRead;
+    }
+    // get all the book titles in the booklist
+    getBookTitles(){
+        let l = [];
+        this.books.forEach(element => {
+            l.push(element.getTitle());
+        });
+        return l;
+    }
 
     // setter
     setCurrentReading(b){
@@ -56,11 +113,11 @@ class Book {
         this.currentlyReading = b;
         return;
         }
-        if(!b.getIsRead()){     // allow null
-        this.currentlyReading = b;
-        return;
+        if(!b.getIsRead()){     // allow null, and when it's not read
+            this.currentlyReading = b;
+            return;
         }
-    }
+    } 
     setLastReading(b){
         this.lastRead = b;
     }
@@ -70,7 +127,8 @@ class Book {
     add = (b) => {
         // push to the bookshelf
         if(b!=null){        // check for null
-        this.books.push(b);
+            this.books.push(b);
+            return true;
         }
         // check whether read or not and set if it's read
         this.setCurrentReading(b);
@@ -105,8 +163,11 @@ class Book {
         this.getBooks().forEach(element => {
         // compare the title and set the book
             if(element.getTitle()===t){
-            this.setCurrentReading(element);
-            return;
+                // set current reading for booklist
+                this.setCurrentReading(element);
+                // set starting date for book
+                let date_start = new Date();
+                element.setStartDate(date_start.getFullYear()+"-"+(date_start.getMonth()+1)+"-"+date_start.getDate());
             }
         })
     }
@@ -120,7 +181,11 @@ class Book {
         this.getBooks().forEach(element => {
         // compare the title and set the book
             if(element.getTitle()===t){
-            element.setIsRead(true);
+                // set it to isRead=true
+                element.setIsRead(true);
+                // set ending date for a book
+                let date_end = new Date();
+                element.setEndDate(date_end.getFullYear()+"-"+(date_end.getMonth()+1)+"-"+ date_end.getDate());
             }
         })
 
@@ -132,10 +197,176 @@ class Book {
 // ==================== Creat some books and a booklist ====================
 // NOTE: All the books are retrieved form amazon.ca (because I am lazy)
 // create some books that are already in the list
+let book1 = new Book("Red Rising (Red Rising Series Book 1)", "fiction", "Pierce Brown", true);
+let book2 = new Book("How to Read a Book", "criticism", "Mortimer J.Adler, Charles Van Doren", false);
+let book3 = new Book("Books: A Living History", "history", "Martye Lyons", true);
+let book4 = new Book("Books: A Living History 2", "history", "Martye Lyons", false);
 
 
-// ==================== html&css manipulation ====================
+let BookL = new BookList();
 
+scheduleAddBook(BookL, book1, "https://images-na.ssl-images-amazon.com/images/I/71k2OJhI9AL.jpg");
+scheduleAddBook(BookL, book2, "https://images-na.ssl-images-amazon.com/images/I/713sKWdmp7L.jpg");
+scheduleAddBook(BookL, book3, "https://images-na.ssl-images-amazon.com/images/I/51ETl6bW+5L.jpg");
+scheduleAddBook(BookL, book4, undefined);
+
+scheduleStartReading(book1);
+scheduleStartReading(book2);
+scheduleStartReading(book2);
+scheduleEndReading(book2);
+scheduleStartReading(book3);            // book3 is already read so no reflection, and dates unknown
+scheduleEndReading(book3);
+scheduleStartReading(book4);
+
+
+// ==================== event listener for submit ====================
+form_node.addEventListener("submit", function(event){
+    event.preventDefault(); // prevent default behavior of form
+    // get all the inputs
+    let form_inputs = getByTag("input");
+
+    // check if you've got the book inside or not
+        // in reality, there may be same titly by different authors
+        // :) just leave it for now because I am lazy
+    if(isInBooklist(BookL, form_inputs[0].value)){
+        alert("You've already have this book in your list!");
+        return;
+    }
+    // == Create a book with inputs ==
+    // get the isRead property => 4th and 5th
+    let isRead_input = false;
+    if(form_inputs[4].checked){ // if 4th is checked, then they selected yes
+        isRead_input = true;
+    }
+    let book_input = new Book(`${form_inputs[0].value}`, `${form_inputs[1].value}`, `${form_inputs[2].value}`, isRead_input);
+    scheduleAddBook(BookL, book_input, form_inputs[3].value);
+    
+    // end reading and start reading
+    // end reading the curReading
+    scheduleEndReading(BookL.getCurrentlyReading());
+    scheduleStartReading(book_input);
+
+    // Reset the form
+    clearForm();
+})
+
+// ==================== functions for this workshop ====================
+// function to update start reading
+function scheduleStartReading(book_input){
+    if(!book_input.getIsRead()){                // when it's not read, it will be sure to pass to book
+        let book_title = book_input.getTitle();
+        // add property to the booklist
+        BookL.startReading(book_title);
+    
+        // reflection on the html current reading
+        let nodes_cur = getById("cur-read-book").children;
+        // 0 = img, 1 = title
+        nodes_cur[0].src = BOOK_DICTIONARY[book_title][2].src;
+        nodes_cur[0].onerror = function(){
+            nodes_cur[0].src = IMG_DEFAULT_PATH;
+        }
+        nodes_cur[1].innerHTML = book_title;
+    }
+}
+// function to update end reading
+function scheduleEndReading(book_input){
+
+    if(!book_input.getIsRead()){                // when it's not read
+        let book_title = book_input.getTitle();
+        // add property to the booklist
+        BookL.finishReading(book_title);
+    
+        // reflection on the html last reading
+        let nodes_cur = getById("last-read-book").children;
+        // 0 = img, 1 = title
+        nodes_cur[0].src = BOOK_DICTIONARY[book_title][2].src;
+        nodes_cur[0].onerror = function(){
+            nodes_cur[0].src = IMG_DEFAULT_PATH;
+        }
+        nodes_cur[1].innerHTML = book_title;
+    }
+    
+}
+// function to clear up form
+function clearForm(){
+    form_node.reset();
+}
+// function to check if book is in the booklist
+function isInBooklist(booklist_obj, title_input){
+    let k = false;
+    (booklist_obj.getBookTitles()).forEach(element => {
+        if(title_input===element){
+            k=true;
+        }
+    });
+    return k;
+}
+// add firstly to booklist object
+//      secondly to html element
+            //scheduleAddBook(BookL, book1);
+            //scheduleAddBook(BookL, book3, "https://images-na.ssl-images-amazon.com/images/I/51ETl6bW+5L.jpg");
+function scheduleAddBook(booklist_obj, book_obj, img_link){
+    // add to booklist
+    let r_1 = booklist_obj.add(book_obj);
+    // create html object
+    let r_2 = addBookHTML(book_obj, img_link);
+
+    if(r_1 && r_2){ // if both are true (success)
+        console.log(SUCCESS_ADD_MSG);
+    }
+}
+function addBookHTML(book, img_link){
+    let inner = createNewNode("DIV", undefined, book_container, "book-inner");
+    let img_inner = createImgNode(IMG_DEFAULT_PATH, undefined, inner, "book-obj-img");
+    if(img_link!==undefined){
+        img_inner.src = img_link;
+    }
+    // get not-found error
+    img_inner.onerror = function(){
+        img_inner.src = IMG_DEFAULT_PATH;
+    }
+    let title_inner = createNewNode("DIV", book.getTitle(), inner, "book-obj-title");
+
+    // add event listener to inner container: show info when mouse over
+    let createInfoDisplay = function(){
+        // get the positions to display
+        let info_list = getByClass("book-info-input");
+        //title
+        info_list[0].innerHTML = book.getTitle();
+        // gebre
+        info_list[1].innerHTML = book.getGenre();
+        // author
+        info_list[2].innerHTML = book.getAuthor();
+        // isread
+        info_list[3].innerHTML = book.getIsRead();
+        // start date
+        info_list[4].innerHTML = book.getStartDate();
+        // end date
+        info_list[5].innerHTML = book.getEndDate();
+    }
+    let removeInfoDisplay = function(){
+        // get the positions to remove display
+        let info_list = getByClass("book-info-input");
+        for(var k = 0; k<info_list.length; k++){
+            info_list[k].innerHTML = "";
+        }
+    }
+
+    // mouse over
+    inner.addEventListener("mouseover", createInfoDisplay);
+    inner.addEventListener("mouseleave", removeInfoDisplay);
+    // push the elements to the dictionary we created in case we need reference later
+    BOOK_DICTIONARY[book.getTitle()] = [];
+    BOOK_DICTIONARY[book.getTitle()].push(book);
+    BOOK_DICTIONARY[book.getTitle()].push(inner);
+    BOOK_DICTIONARY[book.getTitle()].push(img_inner);
+    BOOK_DICTIONARY[book.getTitle()].push(title_inner);
+
+    return true;
+}
+function getInput(input_ele){
+    return input_ele.value;
+}
 
 
 // ==================== functions to use ====================

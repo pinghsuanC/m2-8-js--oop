@@ -12,10 +12,15 @@ body{
     background-position: center;
     background-size: auto;
     background-repeat: no-repeat;
+
+    padding-bottom: 100px;
 }
 h1{
     font-size: 3.5em;
     text-align: center;
+}
+h4{
+    margin-bottom: 10px;
 }
 main{
     width: 100%;
@@ -52,6 +57,7 @@ button{
 .form-ele{
     padding-top: 10px;
     padding-bottom: 10px;
+    padding-left: 2px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -63,30 +69,68 @@ button{
 
 .info-ele{
     margin-top: 20px;
-    height: 200px;
+    padding: 10px;
+    height: auto;
+
+}
+.book-info-sub{
+    margin-bottom: 10px;
+}
+.book-info-txt{
+    margin-top: 10px;
+}
+.book-info-input{
+    display: inline-block;
+    margin-left: 10px;
+
+}
+.info-last-read {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-shrink: 2;
+    justify-content: space-evenly;
 }
 
 
-
-/*boolist styles: default*/
+/*boolist styles*/
 .container-book{        /*outer container*/
     background: rgba(255, 255, 255, 0.479);
     max-width: 70%;
+    width: 70%;
+    padding-left: 10px;
     height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start
 }
-.book-obj{
-    display: inline-block;
+.book-inner{
+    max-width: 200px;
+    width: 200px;       /*same width as book img*/
+    max-height: 320px;
+    height: 320px;
+    display: block;
     position: relative;
     margin-left: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 0;
+
 }
 .book-obj-img{
     height: 250px;
     width: 200px;
-    position: absolute;
     object-fit: cover;
+    overflow: hidden;
+    opacity: 0.6;
 }
 .book-obj-title{
-    position: absolute;
-    top: 120px;
-    left: 50px;
+    text-align: center;
+}
+.book-obj-img:hover{
+    cursor: pointer;
+    opacity: 1;
+    transition: 0.5s;
 }
