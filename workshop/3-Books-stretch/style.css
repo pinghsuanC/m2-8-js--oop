@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    font-family: 'Noto Serif', serif;
+}
+
+body{
+    background-image: url("asset/web_backgorund.jpg");     /*source: https://libreshot.com/red-background-book/   */
+                                                            /*wish i could donate one day :D*/
+
+    background-position: center;
+    background-size: auto;
+    background-repeat: no-repeat;
+}
+h1{
+    font-size: 3.5em;
+    text-align: center;
+}
+main{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+input{
+    width: 200px;
+}
+.group-radio{
+    width: 10px;
+    margin-right: 20px;
+}
+button{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.wrapped{
+    width: 100%;
+    margin: 10px;
+}
+
+/*Form and info styles*/
+.container-form-info{   /*outer container*/
+    max-width: 30%;
+}
+.form-info-sub{
+    background: rgba(255, 255, 255, 0.479);
+    height: auto;
+}
+.form-ele{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-inner{
+    padding-bottom: 15px;
+    width: 60%;
+}
+
+.info-ele{
+    margin-top: 20px;
+    height: 200px;
+}
+
+
+
+/*boolist styles: default*/
+.container-book{        /*outer container*/
+    background: rgba(255, 255, 255, 0.479);
+    max-width: 70%;
+    height: auto;
+}
+.book-obj{
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+}
+.book-obj-img{
+    height: 250px;
+    width: 200px;
+    position: absolute;
+    object-fit: cover;
+}
+.book-obj-title{
+    position: absolute;
+    top: 120px;
+    left: 50px;
+}

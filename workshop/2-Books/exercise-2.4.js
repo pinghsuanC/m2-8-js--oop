@@ -1,6 +1,132 @@
 // From 2.3
 // Copy over all of the code from 2.3...
 
+class Book {
+  // attributes
+  title=undefined;
+  genre=undefined;
+  author=undefined;
+  isRead=false;
+
+  // getters
+  getIsRead(){
+    return this.isRead;
+  }
+  getTitle(){
+    return this.title;
+  }
+
+  // setters
+  setIsRead(){
+    this.isRead=true;
+  }
+
+  // constructor
+  constructor(title, genre, author, isRead){
+      this.title=title;
+      this.genre=genre;
+      this.author=author;
+      if(isRead===true){
+          this.isRead=isRead;
+      }
+  }
+}
+class BookList {
+  // Code here
+  books=[];
+  lastRead=null;
+  currentlyReading=null;
+
+  // getter
+  getBooks(){
+    return this.books;
+  }
+  getCurrentlyReading(){
+    return this.currentlyReading;
+  }
+
+  // setter
+  setCurrentReading(b){
+    if(b==null){
+      this.currentlyReading = b;
+      return;
+    }
+    if(!b.getIsRead()){     // allow null
+      this.currentlyReading = b;
+      return;
+    }
+  }
+  setLastReading(b){
+    this.lastRead = b;
+  }
+
+  // method to add book
+    // b is a book instance
+  add = (b) => {
+    // push to the bookshelf
+    if(b!=null){        // check for null
+      this.books.push(b);
+    }
+    // check whether read or not and set if it's read
+    this.setCurrentReading(b);
+  }
+  // method to get read
+  getNumRead = () => {
+    let count = 0;
+    this.getBooks().forEach(element => {
+      if(element.getIsRead()){
+        count++;
+      }
+    });
+    return count;
+  }
+
+  // method to get unread
+  getNumUnread = () => {
+    let count = 0;
+    this.getBooks().forEach(element => {
+      if(!element.getIsRead()){
+        count++;
+      }
+    });
+    return count;
+  }
+
+  // start reading
+    // t = title of a book, string
+  startReading = (t) => {
+    // When we start reading a book, we should set the `currentlyReading` property to point to it.
+    // find the book on the bookshelf
+    this.getBooks().forEach(element => {
+      // compare the title and set the book
+        if(element.getTitle()===t){
+          this.setCurrentReading(element);
+          return;
+        }
+    })
+  }
+  // end reading
+     // t = title of a book, string
+  finishReading = (t) => {
+    /*When we finish reading a book, we should set `currentlyReading` back to `null`,
+      and set `lastRead` to the book we just finished.*/
+      
+      // find the book on the bookshelf and set isRead
+      this.getBooks().forEach(element => {
+      // compare the title and set the book
+        if(element.getTitle()===t){
+          element.setIsRead(true);
+        }
+      })
+
+    // modify the last reading and currently reading
+      this.setLastReading(this.getCurrentlyReading());
+      this.setCurrentReading(null);
+  }
+
+
+}
+
 // Exercise 2.4
 /*
 
@@ -21,8 +147,7 @@ We need two new methods:
 
 Both of these methods will take a book title, as a string.
 
-When we start reading a book, we should set the `currentlyReading` property
-to point to it.
+When we start reading a book, we should set the `currentlyReading` property to point to it.
 
 When we finish reading a book, we should set `currentlyReading` back to `null`,
 and set `lastRead` to the book we just finished.

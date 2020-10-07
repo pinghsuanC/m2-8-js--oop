@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div  class="page-title"><h1>♥ Please don't stop reading ♥</h1></div>
+    <main id="main">
+        <!--1st container: form and info display-->
+        <div class="container-form-info wrapped">
+            <div class="form-ele form-info-sub">
+                <form action="submit">
+                    <!--title-->
+                    <div class="form-inner">
+                        <label for="book-input-title">Title: </label>
+                        <input type="text" id="book-input-title" required>
+                    </div>
+                    <!--Genre-->
+                    <div class="form-inner">
+                        <label for="book-input-genre">Genre: </label>
+                        <input type="text" id="book-input-genre" required>
+                    </div>
+                    <!--author-->
+                    <div class="form-inner">
+                        <label for="book-input-author">Author: </label>
+                        <input type="text" id="book-input-author" required>
+                    </div>
+                    <!--imagelink-->
+                    <div class="form-inner">
+                        <label for="book-input-img">URL of img: </label>
+                        <input type="text" id="book-input-img" required>
+                    </div>
+                    <!--have read-->
+                    <div class="form-inner">
+                        <label for="book-input-isRead">Have you read it?</label>
+                        <div id="group-radio">
+                            <label for="radio_isRead_true">Yes</label>
+                            <input type="radio" name="group-radio" class="group-radio" id="radio_isRead_true" required>
+                            <label for="radio_isRead_false">No</label>
+                            <input type="radio" name="group-radio" class="group-radio" id="radio_isRead_false">
+                        </div>
+                    </div>
+                    <div class="form-inner">
+                        <button>Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div class="info-ele form-info-sub">
+                <div class="default-txt">Click the book img and the book info will be displayed here!</div> 
+            </div>
+        </div>
+
+        <!--2nd container: book-display-->
+        <div class="container-book wrapped">
+            <div class="book-obj">
+                <img src="./asset/default_book.jpeg" alt="" class="book-obj-img">
+                <div class="book-obj-title">BOOKTITLE</div>
+            </div>
+        </div>
+
+    </main> 
+</body>
+</html>

@@ -11,4 +11,11 @@
 
 class BookList {
   // Code here
+  books=[];
+  lastRead=null;
+  currentlyReading=null;
+
 }
+
+let homeLibrary = new BookList();
+console.log(homeLibrary);

@@ -9,3 +9,6 @@
 // and confirm that you have everything in there.
 
 // By the way, Boots is a Simaese cat...
+
+// it's done within the exercise 1.1 sorry
+// the other exercises are copy-pasted.
