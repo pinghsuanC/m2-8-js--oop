@@ -243,7 +243,9 @@ form_node.addEventListener("submit", function(event){
     
     // end reading and start reading
     // end reading the curReading
-    scheduleEndReading(BookL.getCurrentlyReading());
+    if(!isRead_input){
+        scheduleEndReading(BookL.getCurrentlyReading());
+    }
     scheduleStartReading(book_input);
 
     // Reset the form
